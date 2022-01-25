@@ -3,7 +3,6 @@ import { html } from 'https://unpkg.com/htm/preact/standalone.module.js';
 export function Grid({ solution, grid }) {
 
   function hint(a, b, s) {
-    console.log([a, b, s])
     if (a === b) { return 'green-600'; }
     if (s.includes(a)) { return 'orange-400'; }
     return 'gray-800';
@@ -22,7 +21,7 @@ export function Grid({ solution, grid }) {
   }
   
   return html`
-    <table class="[width:60vw] [height:60vw] mx-auto my-6">${
+    <table class="[width:80%] [aspect-ratio:1/1] mx-auto my-6">${
       grid.map(row => html`
         <${Row} row="${row}" solution="${solution}"/>
       `)
