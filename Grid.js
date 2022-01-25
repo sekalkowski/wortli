@@ -12,23 +12,21 @@ export function Grid({ solution, grid }) {
   function Row({row, solution}) {
       const sol = solution.split('');
       return html`
-        <tr>
-        <td class="border border-gray-300 p-2 m-4 bg-${hint(row[0], sol[0], sol)}">${row[0] || ' '}</td>
-        <td class="border border-gray-300 p-2 m-4 bg-${hint(row[1], sol[1], sol)}">${row[1] || ' '}</td>
-        <td class="border border-gray-300 p-2 m-4 bg-${hint(row[2], sol[2], sol)}">${row[2] || ' '}</td>
-        <td class="border border-gray-300 p-2 m-4 bg-${hint(row[3], sol[3], sol)}">${row[3] || ' '}</td>
-        <td class="border border-gray-300 p-2 m-4 bg-${hint(row[4], sol[4], sol)}">${row[4] || ' '}</td>
+        <tr class="h-1/5">${
+          row.map((col, i) => html`
+            <td class="border border-gray-300 p-2 m-4 w-1/5 text-middle text-center bg-${hint(col, sol[i], sol)}">${col || ''}</td>
+          `)
+        }
         </tr>
       `
   }
   
   return html`
-    <table>
-    <${Row} row="${grid[0]}" solution="${solution}"/>
-    <${Row} row="${grid[1]}" solution="${solution}"/>
-    <${Row} row="${grid[2]}" solution="${solution}"/>
-    <${Row} row="${grid[3]}" solution="${solution}"/>
-    <${Row} row="${grid[4]}" solution="${solution}"/>
+    <table class="[width:60vw] [height:60vw] mx-auto my-6">${
+      grid.map(row => html`
+        <${Row} row="${row}" solution="${solution}"/>
+      `)
+    }
     </table>
   `;
 }
