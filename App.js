@@ -1,4 +1,4 @@
-import { html, render } from 'https://unpkg.com/htm/preact/standalone.module.js';
+import { html, render, useState } from 'https://unpkg.com/htm/preact/standalone.module.js';
 
 // New import:
 import { Header } from './Header.js';
@@ -7,12 +7,25 @@ import { Grid } from './Grid.js';
 function App() {
   
   const solution = "BEAST";
-  const prev = [
-    ["H", "E", "A", "R", "T"],
-    ["S", "T", "A", "R", "T"],
-  ];
+  const [prev, setPrev] = useState([]);
+  const [curr, setCurr] = useState([]);
 
-  const curr = ['M', 'E', 'A'];
+  function appendLine(curr) {
+    setPrev(prev.concat(curr));
+    setCurr([]);
+  }
+
+  function addChar(char) {
+    setCurr(curr.concat(char));
+  }
+
+  function backspace(char) {
+    setCurr(curr.slice(0, curr.length - 1));
+  }
+
+  const currSubmittable = curr.length == 5;
+  const currTypable = curr.length < 5;
+  const currDeleteable = curr.length > 0;
 
   function nullArr(ofLen) {
     return Array(ofLen).fill(null);
@@ -63,7 +76,9 @@ function App() {
 
       <div class="">${keyboard1.map(Key)}</div>
       <div class="ml-[4%]">${keyboard2.map(Key)}</div>
-      <div class="ml-[8%]">${keyboard3.map(Key)}
+      <div class="ml-[8%]">
+        <button class="border rounded-1 w-1/12">⌫</button>
+        ${keyboard3.map(Key)}
         <button class="border rounded-1 w-3/12">⏎</button>
       </div>
     
