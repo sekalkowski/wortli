@@ -7,13 +7,29 @@ import { Grid } from './Grid.js';
 function App() {
   
   const solution = "BEAST";
-  const grid = [
+  const prev = [
     ["H", "E", "A", "R", "T"],
     ["S", "T", "A", "R", "T"],
-    [null, null, null, null, null],
-    [null, null, null, null, null],
-    [null, null, null, null, null],
   ];
+
+  const curr = ['M', 'E', 'A'];
+
+  function nullArr(ofLen) {
+    return Array(ofLen).fill(null);
+  }
+
+  function asGrid(prev, curr) {
+    const currRestLen = 5 - curr.length;
+    const currConcat = curr.concat(nullArr(currRestLen));
+    const gridRestLen = 5 - 1 - prev.length;
+    return [
+      ...prev,
+      currConcat,
+      ...Array(gridRestLen).fill(nullArr(5))
+    ];
+  }
+
+  const grid = asGrid(prev, curr);
 
   const keyboard1 = 'QWERTZUIOPÜ'.split('');
   const keyboard2 = 'ASDFGHJKLÖÄ'.split('');
