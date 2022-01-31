@@ -31,7 +31,7 @@ function App() {
     setCurr(curr.concat(char));
   }
 
-  function backspace(char) {
+  function backspace() {
     setCurr(curr.slice(0, curr.length - 1));
   }
 
@@ -79,7 +79,7 @@ function App() {
   function Key(char) {
     return html`
       <button 
-        class="border rounded-1 w-1/12 text-base bg-${letter_hints[char] || 'gray-700'}"
+        class="border rounded-1 w-1/12 text-base bg-${letter_hints[char] || 'gray-700'} hover:bg-gray-600"
         ${currTypable ? '' : 'disabled'}
         onclick="${() => currTypable && addChar(char)}"
       >${char}</button>
@@ -87,19 +87,26 @@ function App() {
   }
 
   return html`
-    <div class="flex-row bg-gray-600 max-w-sm mx-auto my-8 text-gray-100 p-4">
+    <div class="flex-row bg-gray-600 max-w-sm mx-auto h-full text-gray-100 py-6">
       <${Header}
         title="WÖRTLI"
         resetCallback="${() => resetGame()}"
       />
       <${Grid} solution="${solution}" prev="${prev}" curr="${curr}"/>
 
-      <div class="">${keyboard1.map(Key)}</div>
-      <div class="ml-[4%]">${keyboard2.map(Key)}</div>
-      <div class="ml-[8%]">
-        <button class="border rounded-1 w-1/12" onclick="${() => currDeleteable && backspace()}" ${currDeleteable ? '' : 'disabled'}>⌫</button>
+      <div class="w-full">
+        <button class="invisible w-[${100/24}%]" deactivated/>
+        ${keyboard1.map(Key)}
+      </div>
+      <div class="w-full">
+      <button class="invisible w-[${100/24}%]" deactivated/>
+        ${keyboard2.map(Key)}
+      </div>
+      <div class="w-full">
+      <button class="invisible w-[${100/24}%]" deactivated/>
+        <button class="border rounded-1 w-1/12 bg-gray-700 hover:bg-gray-600" onclick="${() => currDeleteable && backspace()}" ${currDeleteable ? '' : 'disabled'}>⌫</button>
         ${keyboard3.map(Key)}
-        <button class="border rounded-1 w-3/12" onclick="${() => currSubmittable && trySubmit()}" ${currSubmittable ? '' : 'disabled'}>⏎</button>
+        <button class="border rounded-1 w-3/12 bg-gray-700 hover:bg-gray-600" onclick="${() => currSubmittable && trySubmit()}" ${currSubmittable ? '' : 'disabled'}>⏎</button>
       </div>
     
     </div>
