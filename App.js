@@ -10,6 +10,11 @@ function App() {
   const [prev, setPrev] = useState([]);
   const [curr, setCurr] = useState([]);
 
+  function resetGame() {
+    setPrev([]);
+    setCurr([]);
+  }
+
   function appendLine(curr) {
     setPrev(prev.concat([curr]));
     setCurr([]);
@@ -31,7 +36,15 @@ function App() {
 
   function trySubmit() {
     if(inDictionary(curr)) {
-      appendLine(curr);
+      if (curr.join('') === solution) {
+        alert(`Gewonnen! Das Lösungswort war ${solution}`);
+        resetGame();
+      } else if (prev.length === 4) {
+        alert(`Game over! Das Lösungswort war ${solution}`);
+        resetGame();
+      } else {
+        appendLine(curr);
+      }
     } else {
       alert(`Nicht im Wörterbuch: ${curr.join('')}`);
     }
@@ -63,7 +76,7 @@ function App() {
       <button 
         class="border rounded-1 w-1/12 text-base bg-${letter_hints[char] || 'gray-700'}"
         ${currTypable ? '' : 'disabled'}
-        onclick="${() => addChar(char)}"
+        onclick="${() => currTypable && addChar(char)}"
       >${char}</button>
     `;
   }
@@ -72,15 +85,16 @@ function App() {
     <div class="flex-row bg-gray-600 max-w-sm mx-auto my-8 text-gray-100 p-4">
       <${Header}
         title="WÖRTLI"
+        resetCallback="${() => resetGame()}"
       />
       <${Grid} solution="${solution}" prev="${prev}" curr="${curr}"/>
 
       <div class="">${keyboard1.map(Key)}</div>
       <div class="ml-[4%]">${keyboard2.map(Key)}</div>
       <div class="ml-[8%]">
-        <button class="border rounded-1 w-1/12" onclick="${() => backspace()}" ${currDeleteable ? '' : 'disabled'}>⌫</button>
+        <button class="border rounded-1 w-1/12" onclick="${() => currDeleteable && backspace()}" ${currDeleteable ? '' : 'disabled'}>⌫</button>
         ${keyboard3.map(Key)}
-        <button class="border rounded-1 w-3/12" onclick="${() => trySubmit()}" ${currSubmittable ? '' : 'disabled'}>⏎</button>
+        <button class="border rounded-1 w-3/12" onclick="${() => currSubmittable && trySubmit()}" ${currSubmittable ? '' : 'disabled'}>⏎</button>
       </div>
     
     </div>
