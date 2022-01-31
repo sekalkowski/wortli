@@ -23,6 +23,20 @@ function App() {
     setCurr(curr.slice(0, curr.length - 1));
   }
 
+  function inDictionary(word) {
+    return [
+      'HELLO', 'FOOOO', 'HEART', 'BEAST',
+    ].includes(word.join(''))
+  }
+
+  function trySubmit() {
+    if(inDictionary(curr)) {
+      appendLine(curr);
+    } else {
+      alert(`Nicht im Wörterbuch: ${curr.join('')}`);
+    }
+  }
+
   const currSubmittable = curr.length == 5;
   const currTypable = curr.length < 5;
   const currDeleteable = curr.length > 0;
@@ -63,7 +77,11 @@ function App() {
 
   function Key(char) {
     return html`
-      <button class="border rounded-1 w-1/12 text-base bg-${letter_hints[char] || 'gray-700'}">${char}</button>
+      <button 
+        class="border rounded-1 w-1/12 text-base bg-${letter_hints[char] || 'gray-700'}"
+        ${currTypable ? '' : 'disabled="disabled"'}
+        onclick="${() => addChar(char)}"
+      >${char}</button>
     `;
   }
 
@@ -77,9 +95,9 @@ function App() {
       <div class="">${keyboard1.map(Key)}</div>
       <div class="ml-[4%]">${keyboard2.map(Key)}</div>
       <div class="ml-[8%]">
-        <button class="border rounded-1 w-1/12">⌫</button>
+        <button class="border rounded-1 w-1/12" onclick="${() => backspace()}" ${currDeleteable ? '' : 'disabled="disabled"'}>⌫</button>
         ${keyboard3.map(Key)}
-        <button class="border rounded-1 w-3/12">⏎</button>
+        <button class="border rounded-1 w-3/12" onclick="${() => trySubmit()}" ${currSubmittable ? '' : 'disabled="disabled"'}>⏎</button>
       </div>
     
     </div>
