@@ -3,14 +3,21 @@ import { html, render, useState } from 'https://unpkg.com/htm/preact/standalone.
 // New import:
 import { Header } from './Header.js';
 import { Grid } from './Grid.js';
+import { wordlist } from './wordlist.js';
+
+function randomElem(arr) {
+  const randomIndex = Math.floor(Math.random() * arr.length);
+  return arr[randomIndex];
+}
 
 function App() {
   
-  const solution = "BEAST";
+  const [solution, setSolution] = useState(randomElem(wordlist));
   const [prev, setPrev] = useState([]);
   const [curr, setCurr] = useState([]);
 
   function resetGame() {
+    setSolution(randomElem(wordlist));
     setPrev([]);
     setCurr([]);
   }
@@ -29,9 +36,7 @@ function App() {
   }
 
   function inDictionary(word) {
-    return [
-      'HELLO', 'FOOOO', 'HEART', 'BEAST',
-    ].includes(word.join(''))
+    return wordlist.includes(word.join(''))
   }
 
   function trySubmit() {
