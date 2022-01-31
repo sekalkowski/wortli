@@ -11,7 +11,7 @@ function App() {
   const [curr, setCurr] = useState([]);
 
   function appendLine(curr) {
-    setPrev(prev.concat(curr));
+    setPrev(prev.concat([curr]));
     setCurr([]);
   }
 
@@ -37,33 +37,16 @@ function App() {
     }
   }
 
-  const currSubmittable = curr.length == 5;
+  const currSubmittable = curr.length === 5;
   const currTypable = curr.length < 5;
   const currDeleteable = curr.length > 0;
-
-  function nullArr(ofLen) {
-    return Array(ofLen).fill(null);
-  }
-
-  function asGrid(prev, curr) {
-    const currRestLen = 5 - curr.length;
-    const currConcat = curr.concat(nullArr(currRestLen));
-    const gridRestLen = 5 - 1 - prev.length;
-    return [
-      ...prev,
-      currConcat,
-      ...Array(gridRestLen).fill(nullArr(5))
-    ];
-  }
-
-  const grid = asGrid(prev, curr);
 
   const keyboard1 = 'QWERTZUIOPÜ'.split('');
   const keyboard2 = 'ASDFGHJKLÖÄ'.split('');
   const keyboard3 = 'YXCVBNM'.split('');
 
   let letter_hints = {};
-  grid.forEach(row => {
+  prev.forEach(row => {
       row.forEach((char, i) => {
         if(solution.charAt(i) === char) {
           letter_hints[char] = 'green-600';
@@ -79,7 +62,7 @@ function App() {
     return html`
       <button 
         class="border rounded-1 w-1/12 text-base bg-${letter_hints[char] || 'gray-700'}"
-        ${currTypable ? '' : 'disabled="disabled"'}
+        ${currTypable ? '' : 'disabled'}
         onclick="${() => addChar(char)}"
       >${char}</button>
     `;
@@ -90,14 +73,14 @@ function App() {
       <${Header}
         title="WÖRTLI"
       />
-      <${Grid} solution="${solution}" grid="${grid}"/>
+      <${Grid} solution="${solution}" prev="${prev}" curr="${curr}"/>
 
       <div class="">${keyboard1.map(Key)}</div>
       <div class="ml-[4%]">${keyboard2.map(Key)}</div>
       <div class="ml-[8%]">
-        <button class="border rounded-1 w-1/12" onclick="${() => backspace()}" ${currDeleteable ? '' : 'disabled="disabled"'}>⌫</button>
+        <button class="border rounded-1 w-1/12" onclick="${() => backspace()}" ${currDeleteable ? '' : 'disabled'}>⌫</button>
         ${keyboard3.map(Key)}
-        <button class="border rounded-1 w-3/12" onclick="${() => trySubmit()}" ${currSubmittable ? '' : 'disabled="disabled"'}>⏎</button>
+        <button class="border rounded-1 w-3/12" onclick="${() => trySubmit()}" ${currSubmittable ? '' : 'disabled'}>⏎</button>
       </div>
     
     </div>
