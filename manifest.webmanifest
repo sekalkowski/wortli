@@ -1,0 +1,30 @@
+{
+    "name": "WÖRTLI - Worträtsel",
+    "short_name": "WÖRTLI",
+    "lang": "de",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color" : "#ccc" ,
+    "description": "Deutsche Variante der Erfolgsapp Wordle. Rate das gesuchte Wort in 5 Versuchen mit nichts außer deinem Verstand und einem einfachen Farbcode.",
+    "icons": [{
+      "src": "images/icon48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    }, {
+      "src": "images/icon64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    }, {
+      "src": "images/icon96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    }, {
+      "src": "images/icon192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }],
+    "related_applications": [{
+      "platform": "Web"
+    }]
+  }
