@@ -5,19 +5,42 @@ import { Header } from './Header.js';
 import { Grid } from './Grid.js';
 import { wordlist } from './wordlist.js';
 
-function randomElem(arr) {
-  const randomIndex = Math.floor(Math.random() * arr.length);
-  return arr[randomIndex];
+function weight(x, N) {
+  return 0.5 * (Math.tanh(3.0 - (6.0 * x) / N) + 1); // starts around 1 at x=0, degrades towards 0 at x -> N
 }
+
+const wordlist_weights = [];
+var cumsum = 0.0;
+for (let i = 0; i < wordlist.length; i++) {
+  cumsum += weight(i, wordlist.length);
+  wordlist_weights.push(cumsum);
+}
+
+// console.log(cumsum);
+// console.log(wordlist_weights);
+  
+
+function weightedRandomElem(arr) {
+  const needle = Math.random() * cumsum;
+  let idx = wordlist_weights.findIndex((v) => v >= needle);
+  idx = Math.max(idx - 1, 0);
+  return arr[idx];
+}
+
+function chooseSolutionWord() {
+  return weightedRandomElem(wordlist);
+}
+
+// for (let i = 0; i < 100; i++) { console.log(chooseSolutionWord()) }
 
 function App() {
   
-  const [solution, setSolution] = useState(randomElem(wordlist));
+  const [solution, setSolution] = useState(chooseSolutionWord());
   const [prev, setPrev] = useState([]);
   const [curr, setCurr] = useState([]);
 
   function resetGame() {
-    setSolution(randomElem(wordlist));
+    setSolution(chooseSolutionWord());
     setPrev([]);
     setCurr([]);
   }
